@@ -11,6 +11,8 @@ Nelle immagini seguenti viene mostrato come è possibile interagire con il dispo
   1) Nella prima immagine viene mostrato come accendere la luce
   2) Nella seconda immagine viene mostrato come ottenere i dati raccolti dai sensori
   3) Nella terza immagine viene mostrato come utilizzare la pompa d'acqua
+
+
 ![Alt Text](images/ezgif.com-gif-maker.gif)
 ![Alt Text](images/ezgif.com-gif-maker-2.gif)
 ![Alt Text](images/ezgif.com-gif-maker-3.gif)
