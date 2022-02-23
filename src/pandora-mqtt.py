@@ -1,7 +1,6 @@
 
 import paho.mqtt.client as mqtt
 from dotenv import load_dotenv
-from datetime import datetime
 from os import getenv
 from cmd import Cmd
 import argparse
@@ -10,10 +9,10 @@ import time
 import sys
 import re
 
-
 COLOR_TO_HEX = {
     'white': 7,
     'red': 1,
+    'off': 0,
     'green': 2,
     'blue': 4
 }
@@ -248,34 +247,34 @@ def on_message(client, userdata, message):
             # (i.e If you wish to store it in .csv file or something like that)
             print('UPDATE -> dryness={}\tbrightness={}\thumidity={}\t' \
                 'temperature={}\tcapacity={}\torigin={}'
-                    .format(*sensors[: 5], datetime.fromtimestamp(sensors[5])), 
+                    .format(*sensors[: 5], time.asctime(time.localtime(sensors[5]))), 
                 file=sys.stdout)
 
     elif tos == LIGHT_COMMAND:
         light_command_fmt = struct.unpack('<B3xII', message.payload[8: ])
         if 'all' in commands or 'LIGHT' in commands:
             print('LIGHT -> rgb={}\tlimit={}\torigin={}'.format(*light_command_fmt[:2], 
-                datetime.fromtimestamp(light_command_fmt[2])), file=sys.stdout)
+                time.asctime(time.localtime(light_command_fmt[2]))), file=sys.stdout)
 
     elif tos == DRAIN_COMMAND:
         drain_command_fmt = struct.unpack('<?3xII', message.payload[8: ])
         if 'all' in commands or 'DRAIN' in commands:
             print('DRAIN -> is_on={}\tlimit={}\torigin={}'.format(*drain_command_fmt[:2], 
-                datetime.fromtimestamp(drain_command_fmt[2])), file=sys.stdout)
+                time.asctime(time.localtime(drain_command_fmt[2]))), file=sys.stdout)
 
     elif tos == AUTO_COMMAND:
         auto_command_fmt = struct.unpack('<?3xH2xBBBBH2xBBBBI', message.payload[8: ])
         if 'all' in commands or 'AUTO' in commands:
             print('AUTO -> is_on={}\tdryness_max={}\ttime_action_limit=(from {}:{} to {}:{})\t' \
                 'brightness_min={}\ttime_action_limit=(from {}:{} to {}:{})\torigin={}'
-                    .format(*auto_command_fmt[:10], datetime.fromtimestamp(auto_command_fmt[10])), 
+                    .format(*auto_command_fmt[:10], time.asctime(time.localtime(auto_command_fmt[10]))), 
                 file=sys.stdout)
 
     elif tos == FORCE_UPDATE_COMMAND:
         force_update_command_fmt = struct.unpack('<B3xI', message.payload[8: ])
         if 'all' in commands or 'FORCE_UPDATE' in commands:
             print('FORCE_UPDATE -> is_on={}\torigin={}'.format(force_update_command_fmt[0], 
-                datetime.fromtimestamp(force_update_command_fmt[1])), file=sys.stdout)
+                time.asctime(time.localtime(force_update_command_fmt[1]))), file=sys.stdout)
 
     else:
         print('Command not found', file=sys.stderr)
