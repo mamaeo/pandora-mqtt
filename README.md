@@ -1,4 +1,4 @@
-# pandora-mqtt-driver
+# pandora-mqtt
 
 ## Installazione
 Per installare i pacchetti necessari ad eseguire lo script è sufficiente digitare il comando:
