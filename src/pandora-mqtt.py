@@ -151,7 +151,7 @@ class Interactive(Cmd):
         try:       
              # Pack message as string of bytes
             info = self._client.publish(topics[topic_code], 
-                struct.pack('<B3xI?3xIf', DRAIN_COMMAND, 0, is_on, limit, time.time()), qos=qos)
+                struct.pack('<B3xI?3xII', DRAIN_COMMAND, 0, is_on, limit, int(time.time())), qos=qos)
         except (ValueError, RuntimeError):
             raise Exception(info.rc)
 
@@ -170,8 +170,8 @@ class Interactive(Cmd):
         try:       
              # Pack message as string of bytes
             info = self._client.publish(topics[topic_code], 
-                struct.pack('<B3xIB3xIf', LIGHT_COMMAND, 0, COLOR_TO_HEX[color], limit, 
-                time.time()), qos=qos)
+                struct.pack('<B3xIB3xII', LIGHT_COMMAND, 0, COLOR_TO_HEX[color], limit, 
+                int(time.time())), qos=qos)
         except (ValueError, RuntimeError):
             raise Exception(info.rc)
             
@@ -187,9 +187,9 @@ class Interactive(Cmd):
         try:       
              # Pack message as string of bytes
             self._client.publish(topics[topic_code], 
-                struct.pack('<B3xI?3xH2xBBBBH2xBBBBf', AUTO_COMMAND, 0, is_on, dryness_max, 
+                struct.pack('<B3xI?3xH2xBBBBH2xBBBBI', AUTO_COMMAND, 0, is_on, dryness_max, 
                     *Interactive.parseTimeRange(d_limit), brightness_min, 
-                    *Interactive.parseTimeRange(l_limit), time.time()), 
+                    *Interactive.parseTimeRange(l_limit), int(time.time())), 
                 qos)
         except (ValueError, RuntimeError) as err:
             raise Exception(err)
@@ -205,7 +205,7 @@ class Interactive(Cmd):
         try:       
              # Pack message as string of bytes
             info = self._client.publish(topics[topic_code], 
-                struct.pack('<B3xI?3xf', FORCE_UPDATE_COMMAND, 0, is_on, time.time()), qos=qos)
+                struct.pack('<B3xI?3xI', FORCE_UPDATE_COMMAND, 0, is_on, int(time.time())), qos=qos)
         except (ValueError, RuntimeError):
             raise Exception(info.rc)
 
